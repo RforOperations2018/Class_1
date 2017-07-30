@@ -1,48 +1,53 @@
-#
-# This is a Shiny web application. You can run the application by clicking
-# the 'Run App' button above.
-#
-# Find out more about building applications with Shiny here:
-#
-#    http://shiny.rstudio.com/
-#
+# Class 1
+# In Class Examples - Grid
 
 library(shiny)
+library(reshape2)
+library(dplyr)
+library(plotly)
+library(DT)
+
+starwars <- starwars
+starwars$films <- NULL
+starwars$vehicles <- NULL
+starwars$starships <- NULL
+meltwars <- melt(starwars, id = "name")
+meltwars$name <- as.factor(meltwars$name)
+
+pdf(NULL)
 
 # Define UI for application that draws a histogram
 ui <- fluidPage(
-   
-   # Application title
-   titlePanel("Old Faithful Geyser Data"),
-   
-   # Sidebar with a slider input for number of bins 
-   sidebarLayout(
-      sidebarPanel(
-         sliderInput("bins",
-                     "Number of bins:",
-                     min = 1,
-                     max = 50,
-                     value = 30)
-      ),
-      
-      # Show a plot of the generated distribution
-      mainPanel(
-         plotOutput("distPlot")
-      )
-   )
+  titlePanel("Star Wars Grid"),
+  fluidRow(
+    column(4,
+           wellPanel(
+             selectInput("char_select",
+                         "Characters:",
+                         choices = levels(meltwars$name),
+                         multiple = TRUE,
+                         selectize = TRUE,
+                         selected = c("Luke Skywalker", "Darth Vader", "Jabba Desilijic Tiure", "Obi-Wan Kenobi", "R2-D2", "Dexter Jettster"))
+           )       
+    ),
+    column(8,
+           plotlyOutput("plot")
+    )
+  ),
+  fluidRow(
+    DT::dataTableOutput("table")
+  )
 )
 
-# Define server logic required to draw a histogram
+# Define server logic
 server <- function(input, output) {
-   
-   output$distPlot <- renderPlot({
-      # generate bins based on input$bins from ui.R
-      x    <- faithful[, 2] 
-      bins <- seq(min(x), max(x), length.out = input$bins + 1)
-      
-      # draw the histogram with the specified number of bins
-      hist(x, breaks = bins, col = 'darkgray', border = 'white')
-   })
+  output$plot <- renderPlotly({
+    dat <- subset(meltwars, name %in% input$char_select)
+    ggplot(data = dat, aes(x = name, y = as.numeric(value), fill = name)) + geom_bar(stat = "identity")
+  })
+  output$table <- DT::renderDataTable({
+    subset(starwars, name %in% input$char_select, select = c(name, height, mass, birth_year, homeworld, species))
+  })
 }
 
 # Run the application 

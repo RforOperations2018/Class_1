@@ -34,8 +34,12 @@ ui <- fluidPage(
       ),
       mainPanel(
         tabsetPanel(
-          tabPanel("Plot", plotlyOutput("plot")),
-          tabPanel("Table", DT::dataTableOutput("table"))
+          tabPanel("Plot", 
+                   plotlyOutput("plot")
+                 ),
+          tabPanel("Table",
+                   DT::dataTableOutput("table")
+                 )
         )
       )
    )
