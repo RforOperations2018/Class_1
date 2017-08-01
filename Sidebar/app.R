@@ -5,6 +5,7 @@ library(shiny)
 library(reshape2)
 library(dplyr)
 library(plotly)
+library(shinythemes)
 
 starwars <- starwars
 starwars$films <- NULL
@@ -17,12 +18,13 @@ pdf(NULL)
 
 # Define UI for application that draws a histogram
 ui <- fluidPage(
-   
+  tags$link(rel = "stylesheet", type = "text/css", href = "bootstrap.css"),
    # Application title
    titlePanel("Star Wars Sidebar"),
    
    # Sidebar with a slider input for number of bins 
    sidebarLayout(
+      
       sidebarPanel(
          selectInput("char_select",
                      "Characters:",
@@ -49,4 +51,3 @@ server <- function(input, output) {
 
 # Run the application 
 shinyApp(ui = ui, server = server)
-
