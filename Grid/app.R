@@ -1,4 +1,4 @@
-# Class 1
+# Class 2
 # In Class Examples - Grid
 
 library(shiny)
@@ -20,34 +20,15 @@ pdf(NULL)
 ui <- fluidPage(
   titlePanel("Star Wars Grid"),
   fluidRow(
-    column(4,
-           wellPanel(
-             selectInput("char_select",
-                         "Characters:",
-                         choices = levels(meltwars$name),
-                         multiple = TRUE,
-                         selectize = TRUE,
-                         selected = c("Luke Skywalker", "Darth Vader", "Jabba Desilijic Tiure", "Obi-Wan Kenobi", "R2-D2", "Dexter Jettster"))
-           )       
-    ),
-    column(8,
-           plotlyOutput("plot")
-    )
+
   ),
   fluidRow(
-    DT::dataTableOutput("table")
   )
 )
 
 # Define server logic
 server <- function(input, output) {
-  output$plot <- renderPlotly({
-    dat <- subset(meltwars, name %in% input$char_select)
-    ggplot(data = dat, aes(x = name, y = as.numeric(value), fill = name)) + geom_bar(stat = "identity")
-  })
-  output$table <- DT::renderDataTable({
-    subset(starwars, name %in% input$char_select, select = c(name, height, mass, birth_year, homeworld, species))
-  })
+
 }
 
 # Run the application 

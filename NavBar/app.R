@@ -1,5 +1,5 @@
-# Class 1
-# In Class Examples - NavBar
+# Class 2
+# In Class Examples - NavBar - Final
 
 library(shiny)
 library(reshape2)
@@ -18,40 +18,13 @@ pdf(NULL)
 
 # Define UI for application that draws a histogram
 ui <- fluidPage(
-   navbarPage("Star Wars NavBar", 
-              theme = shinytheme("united"),
-              tabPanel("Plot",
-                       sidebarLayout(
-                         sidebarPanel(
-                           selectInput("char_select",
-                                       "Characters:",
-                                       choices = levels(meltwars$name),
-                                       multiple = TRUE,
-                                       selectize = TRUE,
-                                       selected = c("Luke Skywalker", "Darth Vader", "Jabba Desilijic Tiure", "Obi-Wan Kenobi", "R2-D2", "Dexter Jettster"))
-                         ),
-                         # Output plot
-                         mainPanel(
-                           plotlyOutput("plot")
-                         )
-                     )
-                   ),
-              # Data Table
-              tabPanel("Table",
-                       fluidPage(DT::dataTableOutput("table"))
-                     )
+   navbarPage("Star Wars NavBar"
    )
 )
 
 # Define server logic
 server <- function(input, output) {
-  output$plot <- renderPlotly({
-    dat <- subset(meltwars, name %in% input$char_select)
-    ggplot(data = dat, aes(x = name, y = as.numeric(value), fill = name)) + geom_bar(stat = "identity")
-  })
-  output$table <- DT::renderDataTable({
-    subset(starwars, name %in% input$char_select, select = c(name, height, mass, birth_year, homeworld, species))
-  })
+
 }
 
 # Run the application 
