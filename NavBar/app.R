@@ -1,5 +1,5 @@
 # Class 2
-# In Class Examples - NavBar - Final
+# In Class Examples - NavBar
 
 library(shiny)
 library(reshape2)
@@ -18,7 +18,14 @@ pdf(NULL)
 
 # Define UI for application that draws a histogram
 ui <- fluidPage(
-   navbarPage("Star Wars NavBar"
+   navbarPage("Star Wars NavBar",
+              tabPanel("Plot 2 - The Plottening", icon = icon("line-chart"),
+                       inputPanel(selectInput("charSelect",
+                                              "Select Character(s):",
+                                              choices = levels(meltwars$name),
+                                              selectize = TRUE,
+                                              multiple = TRUE,
+                                              selected = "Darth Vader")))
    )
 )
 
